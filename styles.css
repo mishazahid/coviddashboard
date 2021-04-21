@@ -319,7 +319,7 @@ div.tooltip {
     cursor: pointer;
 }
 
-#barGraphContainer .toolTip {
+.toolTip {
     position: absolute;
     display: none;
     min-width: 80px;
@@ -420,7 +420,7 @@ span.pipe{
 
 #sliderContainer{
     font-family: sans-serif;
-    
+
 }
 #sliderContainer #year{
    position: relative;
