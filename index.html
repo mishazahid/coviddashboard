@@ -27,6 +27,7 @@
     <div id="lineGraphContainer">
         <div id="lineGraph"> </div>
     </div>
+
 </div>
 
 <div id="sliderMap">
@@ -37,12 +38,17 @@
 </div>
 
 <div id="barGraphContainer">
+
     <h2>10 Most Effected Countries</h2>
+
     <div id="barGraphBtns"></div>
+
     <div id="barGraph"></div>
+
 </div>
 
 <div id ="sliderContainer">
+    <span id="year">2020</span>
     <div class="range">
         <input id="slider" type="range" min="1" max="12" step="1">
         <div class="ticks">
@@ -64,9 +70,70 @@
 </div>
 
 <div id="date">
-    <h3>last updated 14 December, 2020</h3>
+    <h3>data last updated on 14 December, 2020
+        <span class="pipe">|</span>
+        <span id="readMe" onclick="showReadMe()"> Read Me </span>
+        <span class="pipe">|</span>
+        <span id="grayScale" onclick="grayScale()">  View in Grayscale</span>
+    </h3>
 </div>
 
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <p>The dashboard is not responsive and has been tested on a 1920 by 1080 resolution display.
+        It might need to be zoomed in or out according to the display being tested on.
+        See the report for a reference screenshot</p>
+    <h3>User Interaction</h3>
+    <p><h4>Choropleth Map</h4>
+        <ul>
+           Slider to display spread of Covid cases throughout the world for different
+                months over 2020</br>
+            Click a country to visualize more details of the specific country through a line graph</br>
+            Tooltip showing the total number of cases for a specific month in a specific country
+        </ul>
+    <h4>Line Graph</h4>
+        <ul>
+            Choose between deaths or cases to plot</br>
+            Zoom in to see details of a specific time range
+        </ul>
+    <h4>Bar Chart</h4>
+    <ul>
+        Choose between deaths or cases to plot </br>
+        Tooltip showing the total number of cases or deaths in a specific country
+    </ul>
+    <h4>View in Gray Scale</h4>
+   <ul> The dashboard changes to gray scale to accommodate viewers who can see a limited color spectrum
+   </ul> </br>
+    * Best Viewed in Google Chrome </br>
+    * Description in the report
+    </p>
+
+</div>
+
+<script>
+    function showReadMe(){
+        document.getElementsByClassName('alert')[0].style.display='block';
+    }
+
+
+    var gray=false;
+    function grayScale(){
+        //console.log("working GRAY")
+        if(gray==true){
+            document.getElementsByTagName("html")[0].style.filter = "grayscale(0)";
+            gray=false;
+            document.getElementById('grayScale').innerText="View in Gray Scale";
+        }
+        else{
+            document.getElementsByTagName("html")[0].style.filter = "grayscale(1)";
+            gray=true;
+            document.getElementById('grayScale').innerText="View in Color Mode";
+        }
+
+    }
+
+
+</script>
 
 <script>
     //make color as re the possible domain
@@ -104,7 +171,7 @@
 
 <script>
 
-    var countryCode = "GBR";
+    var countryCode = "AUS";
 
 
     var tooltipDiv = d3.select("body").append("div")
@@ -226,13 +293,15 @@
 
             n.forEach(myFunction)
 
-
+            // tooltipDiv.html("<b style='font-size: 16px'>"+d.properties.name + "</br>"+
+            //     "</b> <span style='color: red;font-weight: bold' >"+ cases + " Cases </span>")
             console.log(cases)
 
             tooltipDiv.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltipDiv.html("<b>"+d.properties.name + "</b>: <span style='color: red;font-weight: bold' >"+ cases + " Cases </span>")
+            tooltipDiv.html("<b style='font-size: 16px;font-weight:bolder;'>"+d.properties.name + "</br>"+
+                "</b> <span id='casesNum' style='color: #196dde;font-weight: bold; font-size: 14px' >"+ cases + " Cases </span>")
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         }
@@ -375,7 +444,20 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+                "translate(" + margin.left + "," + margin.top + ")")
+            .on("mouseover",function(d){
+                d3.selectAll(".grid line").style('stroke-opacity','0.7');
+            })
+            .on("mouseout",function(d){
+                d3.selectAll(".grid line").style('stroke-opacity','0');
+            });
+
+        var y = d3.scaleLinear().range([height, 0]);
+        // gridlines in y axis function
+        function make_y_gridlines() {
+            return d3.axisLeft(y)
+                .ticks(5)
+        }
 
         //Read the data
         d3.csv("lineGraph.csv",
@@ -422,6 +504,15 @@
                         return +d.value;
                     })])
                     .range([height, 0]);
+
+                // add the Y gridlines
+                svg.append("g")
+                    .attr("class", "grid")
+                    .call(make_y_gridlines()
+                        .tickSize(-width)
+                        .tickFormat("")
+                    )
+
                 yAxis = svg.append("g")
                     .call(d3.axisLeft(y)).attr('stroke-width', 0);
 
@@ -434,7 +525,7 @@
                     .style("text-anchor", "middle")
                     .style("fill","#050543")
                     .style("font","12px sans-serif")
-                    .text("Cases");
+                    .text("New Cases");
 
 
                 // Add a clipPath: everything out of this area won't be drawn.
@@ -619,7 +710,7 @@
                     .style("text-anchor", "middle")
                     .style("fill","#050543")
                     .style("font","12px sans-serif")
-                    .text("Deaths");
+                    .text("New Deaths");
 
 
                 // Add a clipPath: everything out of this area won't be drawn.
@@ -785,7 +876,8 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+                "translate(" + margin.left + "," + margin.top + ")")
+            .style('pointer-events','all');
 
         // Initialize the X axis
         var x = d3.scaleBand()
@@ -793,6 +885,7 @@
             .padding(0.2);
         var xAxis = svg.append("g")
             .attr("transform", "translate(0," + height + ")")
+            .attr("class", "myXaxis")
 
         // Initialize the Y axis
         var y = d3.scaleLinear()
@@ -800,6 +893,8 @@
         var yAxis = svg.append("g")
             .attr("class", "myYaxis")
 
+
+        var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
         // A function that create / update the plot for a given variable:
         function update(selectedVar) {
@@ -830,6 +925,19 @@
                     .enter()
                     .append("rect")
                     .merge(u)
+                    .on("mouseover",function (d){
+                        d3.select(this).attr("fill","#84BADA");
+
+                        tooltip
+                            .style("left", d3.event.pageX - 50 + "px")
+                            .style("top", d3.event.pageY - 70 + "px")
+                            .style("display", "inline-block")
+                            //.html((d.code) + "<br>"  + (d[selectedVar]));
+                        .html("<b style='font-size: 16px;font-family:sans-serif'>"+(d.code) + "</br>"+
+                            "</b> <span id='casesNum' style='color: #196dde;font-family:sans-seriffont-size: 14px' >"+(d[selectedVar]));
+                    })
+                    .on("mouseout", function(d){ tooltip.style("display", "none");
+                        d3.select(this).attr("fill","#3566A5")})
                     .transition()
                     .duration(1000)
                     .attr("x", function (d) {
@@ -843,6 +951,8 @@
                         return height - y(d[selectedVar]);
                     })
                     .attr("fill", "#3566A5")
+
+
             })
 
         }
