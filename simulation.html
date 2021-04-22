@@ -10,45 +10,32 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3-legend/1.1.0/d3-legend.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="simStyles.css">
 </head>
 <body>
-
 
 <div id="heading">
     <p> COVID 19 DASHBOARD</p>
 </div>
 
-<div id="countryContainer">
-    <div id="countryStats"> </div>
-    <button class="button button1"  onclick="load()" >Cases </button>
-    <button class="button button2" onclick="loadDeaths()" >Deaths </button>
-    <div id="lineGraphContainer">
-        <div id="lineGraph"> </div>
-    </div>
-
-</div>
 
 <div id="sliderMap">
-    <svg id="worldMap" width="1200" height="700"></svg>
+    <svg id="worldMap" width="1400" height="750"></svg>
     <div id="legend">
         <svg class = "scale" width="120" height="200"></svg>
     </div>
 </div>
 
-<div id="barGraphContainer">
 
-    <h2>10 Most Effected Countries</h2>
-
-    <div id="barGraphBtns"></div>
-
-    <div id="barGraph"></div>
-
-</div>
 
 <div id ="sliderContainer">
     <span id="year">2020</span>
+    <div id="simBtns">
+        <button class="button button1" onclick="startSim()"><i class="fa fa-play"></i> Play</button>
+        <button class="button button1" onclick="stopSim()"><i class="fa fa-pause"></i> Pause</button>
+    </div>
     <div class="range">
         <input id="slider" type="range" min="1" max="12" step="1">
         <div class="ticks">
@@ -67,16 +54,20 @@
             <span class="tick">Dec</span>
         </div>
     </div>
+
 </div>
+
 
 <div id="date">
     <h3>data last updated on 14 December, 2020
         <span class="pipe">|</span>
-        <a id="dashLink" href="simulation.html"> <span id="dashboard" >  Simulation </span></a>
+        <a id="dashLink" href="index.html"> <span id="dashboard" >  Visualizations </span></a>
         <span class="pipe">|</span>
         <span id="readMe" onclick="showReadMe()"> Read Me </span>
         <span class="pipe">|</span>
         <span id="grayScale" onclick="grayScale()">  View in Grayscale</span>
+
+
     </h3>
 </div>
 
@@ -86,30 +77,20 @@
         <span style="text-decoration: underline">It might need to be zoomed in or out according to the display being tested on.</span>
         See the report for a reference screenshot</p>
     <h3>User Interaction</h3>
+    <p><h4>Play: </h4> <span>Starts the Simulation</span> </br>
+    <h4>Pause: </h4> <span>Pauses the Simulation</span> </br> </br>
     <p><h4>Choropleth Map</h4>
-        <ul>
-            Adjust the Slider to display spread of Covid cases throughout the world for different
-                months over 2020</br>
-            Click a country to visualize more details of the specific country through a line graph</br>
-            Hover over a country to see the total number of cases for the month in that country
-        </ul>
-    <h4>Line Graph</h4>
-        <ul>
-            Choose between deaths or cases to plot</br>
-            Zoom in to see details of a specific time range
-        </ul>
-    <h4>Bar Chart</h4>
     <ul>
-        Choose between deaths or cases to plot </br>
-        Hover over bars to see the total number of cases or deaths in a specific country
+        Hover over a country to see the total number of cases for the month in that country
     </ul>
-    <h4>Simulation</h4>
+    <h4>Visualizations</h4>
     <ul>
-        Run a simulation showing the spread of the virus
+        Navigate back to the Visualizations
     </ul>
     <h4>View in Gray Scale</h4>
-   <ul> The dashboard changes to gray scale to accommodate viewers who can see a limited color spectrum
-   </ul> </br>
+    <ul> The dashboard changes to gray scale to accommodate viewers who can see a limited color spectrum
+    </ul> </br>
+    * When the simulation is played after pausing, it runs from the month stopped at </br>
     * Best Viewed in Google Chrome </br>
     * Description in the report
     </p>
@@ -117,13 +98,9 @@
 </div>
 
 
-<script src="script.js"></script>
 
-<script>
-    loadCountryStats();
-    load();
-    barGraphLoad();
-</script>
+<script src="simScript.js"></script>
+
 
 
 

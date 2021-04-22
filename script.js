@@ -138,7 +138,7 @@ function ready(error, topo) {
 
         var sliderVal = document.getElementById("slider").value;
         var cases;
-        console.log(sliderVal)
+        // console.log(sliderVal)
 
         function myFunction(item){
             //   console.log(d.id)
@@ -181,7 +181,7 @@ function ready(error, topo) {
 
         // tooltipDiv.html("<b style='font-size: 16px'>"+d.properties.name + "</br>"+
         //     "</b> <span style='color: red;font-weight: bold' >"+ cases + " Cases </span>")
-        console.log(cases)
+        // console.log(cases)
 
         tooltipDiv.transition()
             .duration(200)
@@ -217,10 +217,10 @@ function ready(error, topo) {
             .transition()
             .duration(200)
             .style("stroke", "transparent")
-        console.log("clicked", d.id)
+        // console.log("clicked", d.id)
         //   console.log(countryCode)
     }
-    console.log(n)
+    //console.log(n)
 
 
     // Draw the map
@@ -361,7 +361,7 @@ function load() {
         // Now I can use this dataset:
         function (data) {
 
-            console.log(data);
+           // console.log(data);
             // Add X axis --> it is a date format
             var x = d3.scaleTime()
                 .domain(d3.extent(data, function (d) {
@@ -551,7 +551,7 @@ function loadDeaths() {
         // Now I can use this dataset:
         function (data) {
 
-            console.log(data);
+          //  console.log(data);
             // Add X axis --> it is a date format
             var x = d3.scaleTime()
                 .domain(d3.extent(data, function (d) {
@@ -719,7 +719,7 @@ function loadCountryStats() {
 
         // Now I can use this dataset:
         function (data) {
-            console.log(data);
+          //  console.log(data);
             d3.select("#countryStats").append("div")
                 .data(data)
                 .html(function(d){
@@ -741,7 +741,7 @@ function loadCountryStats() {
 
 function barGraphLoad(value) {
 
-    console.log(value);
+  //  console.log(value);
 
     // set the dimensions and margins of the graph
     var margin = {top: 30, right: 30, bottom: 70, left: 60},
