@@ -51,7 +51,22 @@ legend.append("text")
     .attr("y", 9)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
-    .text(function(d) { return "<"+ d;});
+    .text(function(d) {
+        var num;
+        switch(d){
+            case 100: num = "100"; break;
+            case 1000: num = "1K"; break;
+            case 10000: num = "10K"; break;
+            case 50000: num = "50K"; break;
+            case 100000: num = "100K"; break;
+            case 1000000: num = "1000K"; break;
+            case 3000000: num = "3000K"; break;
+            case 10000000: num = "10000K"; break;
+        }
+
+        return "<"+ num;
+
+    });
 
 
 
